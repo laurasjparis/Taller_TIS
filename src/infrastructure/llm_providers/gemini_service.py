@@ -21,7 +21,7 @@ class GeminiService:
         else:
             self.mock = False
             genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel('gemini-1.5-flash')
+            self.model = genai.GenerativeModel('gemini-2.5-flash')
 
     def format_products_info(self, products: List[Product]) -> str:
         """
