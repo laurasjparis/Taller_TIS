@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce AI Chat</title>
+    <title>Lau Kicks - Tienda IA</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
+            --bg-color: #1f121a; /* Oscuro con tono cereza */
+            --card-bg: rgba(46, 26, 36, 0.7);
+            --text-main: #fdf2f8; /* Rosa casi blanco */
+            --text-muted: #f4bce3; /* Rosa pastel suave */
+            --accent: #f472b6; /* Rosa vibrante */
+            --accent-hover: #db2777; /* Rosa oscuro */
         }
 
         body {
             margin: 0;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg-color);
-            background-image: radial-gradient(circle at top right, #1e293b 0%, transparent 40%),
-                              radial-gradient(circle at bottom left, #1e1b4b 0%, transparent 40%);
+            background-image: radial-gradient(circle at top right, #3b1e2c 0%, transparent 40%),
+                              radial-gradient(circle at bottom left, #4b1b34 0%, transparent 40%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -29,16 +29,17 @@
         header {
             padding: 2rem;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(244, 114, 182, 0.2);
             backdrop-filter: blur(10px);
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.5rem;
-            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            font-size: 3rem;
+            background: linear-gradient(to right, #f472b6, #fb7185);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
         main {
@@ -54,7 +55,7 @@
 
         .product-card {
             background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(244, 114, 182, 0.1);
             border-radius: 16px;
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -63,17 +64,17 @@
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 25px rgba(219, 39, 119, 0.3);
+            border-color: rgba(244, 114, 182, 0.6);
         }
 
         .product-card h3 { margin-top: 0; font-size: 1.25rem; }
         .product-brand { color: var(--accent); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; list-style: none; padding:0;}
-        .product-price { font-size: 1.5rem; font-weight: bold; margin: 1rem 0; }
+        .product-price { font-size: 1.5rem; font-weight: bold; margin: 1rem 0; color: #fdf2f8;}
         .product-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
         
         .badges-wrapper { display: flex; gap: 0.5rem; margin-top: 1rem; }
-        .badge { background: rgba(59, 130, 246, 0.2); color: #93c5fd; padding: 4px 10px; border-radius: 100px; font-size: 0.8rem; }
+        .badge { background: rgba(244, 114, 182, 0.2); color: #fbcfe8; padding: 4px 10px; border-radius: 100px; font-size: 0.8rem; border: 1px solid rgba(244,114,182,0.3);}
 
         /* Floating Chatbot */
         #chat-widget {
@@ -84,29 +85,32 @@
         }
 
         #chat-toggle {
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            background: linear-gradient(135deg, #f472b6, #e11d48);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
+            width: 65px;
+            height: 65px;
+            font-size: 1.8rem;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(219, 39, 119, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #chat-toggle:hover { transform: scale(1.1); }
+        #chat-toggle:hover { transform: scale(1.1); box-shadow: 0 4px 25px rgba(219, 39, 119, 0.8); }
 
         #chat-window {
             display: none;
             position: absolute;
-            bottom: 80px;
+            bottom: 85px;
             right: 0;
             width: 350px;
             height: 500px;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(31, 18, 26, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(244, 114, 182, 0.2);
             border-radius: 20px;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
@@ -114,10 +118,13 @@
         }
 
         .chat-header {
-            background: rgba(255,255,255,0.05);
-            padding: 1rem;
+            background: linear-gradient(to right, rgba(219, 39, 119, 0.2), rgba(244, 114, 182, 0.1));
+            padding: 1.2rem;
             font-weight: bold;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(244, 114, 182, 0.2);
+            color: #fce7f3;
+            text-align: center;
         }
 
         .chat-messages {
@@ -131,8 +138,8 @@
 
         .chat-message {
             max-width: 80%;
-            padding: 0.8rem 1rem;
-            border-radius: 15px;
+            padding: 0.9rem 1.1rem;
+            border-radius: 18px;
             font-size: 0.9rem;
             line-height: 1.4;
             animation: fadeIn 0.3s ease;
@@ -141,78 +148,91 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .chat-message.assistant {
-            background: rgba(59, 130, 246, 0.2);
+            background: rgba(244, 114, 182, 0.15);
+            border: 1px solid rgba(244, 114, 182, 0.2);
             align-self: flex-start;
             border-bottom-left-radius: 5px;
-            color: #e2e8f0;
+            color: #fdf2f8;
         }
 
         .chat-message.user {
-            background: #3b82f6;
+            background: var(--accent-hover);
             align-self: flex-end;
             border-bottom-right-radius: 5px;
             color: white;
+            box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
         }
 
         .chat-input {
             padding: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(46, 26, 36, 0.5);
+            border-top: 1px solid rgba(244, 114, 182, 0.1);
             display: flex;
             gap: 0.5rem;
         }
 
         .chat-input input {
             flex: 1;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 0.8rem;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(244, 114, 182, 0.3);
+            padding: 0.8rem 1rem;
+            border-radius: 20px;
             color: white;
             outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .chat-input input:focus {
+            border-color: var(--accent);
         }
 
         .chat-input button {
             background: var(--accent);
             color: white;
             border: none;
-            padding: 0 1rem;
-            border-radius: 10px;
+            padding: 0 1.2rem;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .chat-input button:hover {
+            background: var(--accent-hover);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Lumina Kicks</h1>
-        <p style="color: var(--text-muted)">Catálogo Premium con IA</p>
+        <h1>Lau Kicks ✨</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; letter-spacing: 1px;">Smart Sneaker Boutique</p>
     </header>
 
     <main>
         <div class="products-grid" id="products-container">
-            <div style="color: var(--text-muted);">Cargando productos desde la API...</div>
+            <div style="color: var(--accent); font-weight: bold; text-align: center; width: 100%;">💖 Conectando con la pasarela de moda...</div>
         </div>
     </main>
 
     <!-- Floating Chatbot -->
     <div id="chat-widget">
         <div id="chat-window">
-            <div class="chat-header">Asistente Gemini 🤖</div>
+            <div class="chat-header">Asesora Bot IA 🎀</div>
             <div class="chat-messages" id="chat-messages">
-                <div class="chat-message assistant">¡Hola! Soy tu asistente de ventas impulsado por IA. ¿Buscas tallas o modelos específicos hoy?</div>
+                <div class="chat-message assistant">¡Hola linda! Soy tu asesora personal de Lau Kicks. ¿Buscas tallas o un estilo de zapatos en especial para hoy?</div>
             </div>
             <div class="chat-input">
                 <input type="text" id="chat-input-text" placeholder="Escribe tu consulta..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">Enviar</button>
             </div>
         </div>
-        <button id="chat-toggle" onclick="toggleChat()">💬</button>
+        <button id="chat-toggle" onclick="toggleChat()">✨</button>
     </div>
 
     <script>
-        const API_URL = "http://localhost:8000";
-        const SESSION_ID = "frontend_user_00" + Math.floor(Math.random()*100);
+        const API_URL = "/api";
+        const SESSION_ID = "lau_kicks_vip_00" + Math.floor(Math.random()*100);
 
         // Fetch de productos al cargar
         async function fetchProducts() {
@@ -232,17 +252,16 @@
                             <div class="badges-wrapper">
                                 <span class="badge">Talla: ${p.size}</span>
                                 <span class="badge">${p.color}</span>
-                                <span class="badge">Stock: ${p.stock}</span>
+                                <span class="badge">Disponibles: ${p.stock}</span>
                             </div>
                         </div>
                     `;
                 });
             } catch (err) {
-                document.getElementById("products-container").innerHTML = "<p>Error conectando a la API de FastAPI. ¿Está encendida en el puerto 8000?</p>";
+                document.getElementById("products-container").innerHTML = "<p style='color: #f472b6;'>Error conectando a la API. ¿Está encendida?</p>";
             }
         }
 
-        // Chat logic
         function toggleChat() {
             const w = document.getElementById("chat-window");
             w.style.display = w.style.display === "flex" ? "none" : "flex";
@@ -265,7 +284,7 @@
             // Loading placeholder
             const container = document.getElementById("chat-messages");
             const loadingId = "load-" + Date.now();
-            container.innerHTML += `<div class="chat-message assistant" id="${loadingId}">...</div>`;
+            container.innerHTML += `<div class="chat-message assistant" id="${loadingId}">Escribiendo... 🌸</div>`;
             container.scrollTop = container.scrollHeight;
 
             try {
@@ -279,7 +298,7 @@
                 appendMessage("assistant", data.assistant_message);
             } catch (err) {
                 document.getElementById(loadingId).remove();
-                appendMessage("assistant", "Hubo un fallo de conexión. Intenta nuevamente.");
+                appendMessage("assistant", "Uy, me desconecté un segundo. ¡Intenta enviarlo de nuevo! 🎀");
             }
         }
 

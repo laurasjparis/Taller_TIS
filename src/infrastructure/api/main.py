@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from typing import List, Optional
 from sqlalchemy.orm import Session
 
@@ -37,18 +38,15 @@ def startup_event():
     """
     init_db()
 
-@app.get("/", tags=["Info"])
-def root():
-    """
-    Servicio de bienvenida y estado top-level.
-    """
-    return {
-        "api": "E-commerce AI Chat",
-        "version": "1.0.0",
-        "endpoints": ["/products", "/chat", "/chat/history/{session_id}"]
-    }
+@app.get("/", include_in_schema=False)
+def serve_frontend():
+    import os
+    index_path = os.path.join(os.getcwd(), "frontend", "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"error": "index.html not found"}
 
-@app.get("/health", tags=["Info"])
+@app.get("/api/health", tags=["Info"])
 def health():
     """
     Health check (Comprobaciones sanitarias Liveness).
@@ -77,7 +75,7 @@ def get_chat_service(db: Session = Depends(get_db)) -> ChatService:
 
 # ================= RUTAS Y CONTROLADORES API ================= #
 
-@app.get("/products", response_model=List[ProductDTO], tags=["Products"])
+@app.get("/api/products", response_model=List[ProductDTO], tags=["Products"])
 def get_products(service: ProductService = Depends(get_product_service)):
     """
     Obtiene la lista completa de productos disponibles.
@@ -103,7 +101,7 @@ def get_products(service: ProductService = Depends(get_product_service)):
     """
     return service.get_all_products()
 
-@app.get("/products/{product_id}", response_model=ProductDTO, tags=["Products"])
+@app.get("/api/products/{product_id}", response_model=ProductDTO, tags=["Products"])
 def get_product(product_id: int, service: ProductService = Depends(get_product_service)):
     """
     Aisla un elemento unitario en el Catálogo a través de su PrimaryKey idéntica.
@@ -123,7 +121,7 @@ def get_product(product_id: int, service: ProductService = Depends(get_product_s
     except ProductNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@app.post("/chat", response_model=ChatMessageResponseDTO, tags=["Chat"])
+@app.post("/api/chat", response_model=ChatMessageResponseDTO, tags=["Chat"])
 async def chat(request: ChatMessageRequestDTO, service: ChatService = Depends(get_chat_service)):
     """
     Escucha la pregunta y dispara asíncronamente a los motores conversacionales en Gemini, procesando 
@@ -141,7 +139,7 @@ async def chat(request: ChatMessageRequestDTO, service: ChatService = Depends(ge
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/chat/history/{session_id}", response_model=List[ChatHistoryDTO], tags=["Chat"])
+@app.get("/api/chat/history/{session_id}", response_model=List[ChatHistoryDTO], tags=["Chat"])
 def get_chat_history(session_id: str, limit: int = 10, service: ChatService = Depends(get_chat_service)):
     """
     Obtiene para el Frontend/UI el historial entero de una conversación previa.
@@ -157,7 +155,7 @@ def get_chat_history(session_id: str, limit: int = 10, service: ChatService = De
     history = service.get_session_history(session_id, limit)
     return [ChatHistoryDTO.model_validate(msg) for msg in history]
 
-@app.delete("/chat/history/{session_id}", tags=["Chat"])
+@app.delete("/api/chat/history/{session_id}", tags=["Chat"])
 def delete_chat_history(session_id: str, service: ChatService = Depends(get_chat_service)):
     """
     Suprime definitivamente todo registro en SQL para la sesión indicada, restaurando parámetros AI a cero.

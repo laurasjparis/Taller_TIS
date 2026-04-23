@@ -49,15 +49,16 @@ docker-compose up --build
 ```
 
 ## Uso
-- API: http://localhost:8000
-- Documentación: http://localhost:8000/docs
+- Interfaz Frontend (Tienda Lau Kicks): http://localhost:8000
+- Documentación Swagger: http://localhost:8000/docs
 - Redoc: http://localhost:8000/redoc
 
-## Endpoints
-- GET /products - Lista todos los productos
-- GET /products/{id} - Obtiene un producto
-- POST /chat - Envía mensaje al chat
-- GET /chat/history/{session_id} - Obtiene historial
+## Endpoints API
+- GET /api/products - Lista todos los productos disponibles
+- GET /api/products/{id} - Obtiene detalles de un producto específico
+- POST /api/chat - Envía un mensaje a la asesora web IA
+- GET /api/chat/history/{session_id} - Extrae el historial cronológico de la conversación
+- DELETE /api/chat/history/{session_id} - Suprime el caché de la conversación
 
 ## Tests
 ```bash
