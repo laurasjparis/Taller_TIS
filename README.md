@@ -7,41 +7,41 @@ API REST de e-commerce de zapatos con chat inteligente usando Clean Architecture
 
 ```mermaid
 graph TD
-    Client[📱 Cliente Web / Frontend] --> API[🌐 FastAPI Router]
+    Client[Cliente Web / Frontend] --> API[FastAPI Router]
     
     subgraph Capa de Aplicación
-        API --> ProdService[🛍️ Product Service]
-        API --> ChatService[💬 Chat Service]
+        API --> ProdService[Product Service]
+        API --> ChatService[Chat Service]
     end
     
     subgraph Capa de Dominio
-        ProdService --> Entities[📦 Entidades y DTOs]
+        ProdService --> Entities[Entidades y DTOs]
         ChatService --> Entities
-        Entities -.-> Interfaces[🔌 Interfaces genéricas]
+        Entities -.-> Interfaces[Interfaces genéricas]
     end
     
     subgraph Capa de Infraestructura
-        Interfaces --> SQLite[💾 SQLite DB]
-        Interfaces --> Gemini[🧠 Google Gemini AI]
+        Interfaces --> SQLite[SQLite DB]
+        Interfaces --> Gemini[Google Gemini AI]
     end
 ```
 
 ## Estructura de Carpetas
 
 ```text
-📦 e-commerce-chat-ai
- ┣ 📂 evidencias/         # Capturas de pantalla para la rúbrica
- ┣ 📂 frontend/           # Interfaz Gráfica Web (Lau Kicks)
- ┃ ┗ 📜 index.html
- ┣ 📂 src/
- ┃ ┣ 📂 domain/           # Reglas de negocio (Entidades, Interfaces)
- ┃ ┣ 📂 application/      # Orquestación y casos de uso (Servicios, DTOs)
- ┃ ┗ 📂 infrastructure/   # Bases de datos, APIs externas (FastAPI, SQLite, Gemini)
- ┣ 📂 tests/              # Pruebas Unitarias automatizadas
- ┣ 📜 docker-compose.yml  # Manifiesto de contenedores
- ┣ 📜 Dockerfile          # Receta y pasos de compilación
- ┣ 📜 requirements.txt    # Librerías en Python (.venv)
- ┗ 📜 README.md           # Documentación principal
+e-commerce-chat-ai/
+ ├── evidencias/         # Capturas de pantalla para la rúbrica
+ ├── frontend/           # Interfaz Gráfica Web (Lau Kicks)
+ │   └── index.html
+ ├── src/
+ │   ├── domain/           # Reglas de negocio (Entidades, Interfaces)
+ │   ├── application/      # Orquestación y casos de uso (Servicios, DTOs)
+ │   └── infrastructure/   # Bases de datos, APIs externas (FastAPI, SQLite, Gemini)
+ ├── tests/              # Pruebas Unitarias automatizadas
+ ├── docker-compose.yml  # Manifiesto de contenedores
+ ├── Dockerfile          # Receta y pasos de compilación
+ ├── requirements.txt    # Librerías en Python (.venv)
+ └── README.md           # Documentación principal
 ```
 
 ## Tecnologías
